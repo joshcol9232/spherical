@@ -2,7 +2,7 @@ use macroquad::prelude::*;
 use macroquad::math::Vec3;
 
 use crate::consts;
-use crate::tools::vec_from_lat_lon_r;
+use crate::tools;
 
 pub struct DataPoint {
     location: Vec3,
@@ -11,22 +11,24 @@ pub struct DataPoint {
 
 impl DataPoint {
     pub fn new(lat: f32, lon: f32, r: f32, value: f32) -> Self {
+        Self::from_vec3(tools::vec_from_lat_lon_r(lat, lon, r), value)
+    }
+
+    pub fn from_vec3(location: Vec3, value: f32) -> Self {
         Self {
-            location: vec_from_lat_lon_r(lat, lon, r),
+            location,
             value,
         }
     }
 
-    pub fn from_raw(location: Vec3, value: f32) -> Self {
-        Self { location, value }
+    pub fn value(&self) -> f32 { self.value }
+
+    fn calc_colour(&self, max_value: f32) -> Color {
+        tools::value_to_colour(self.value, max_value, &consts::COLOUR_MAP)
     }
 
-    fn get_colour(&self) -> Color {
-        BLUE
-    }
-
-    pub fn render(&self) {
-        draw_sphere(self.location, consts::MARKER_SIZE, None, self.get_colour());
+    pub fn render(&self, max_value: f32) {
+        draw_sphere(self.location, consts::MARKER_SIZE, None, self.calc_colour(max_value));
     }
 }
 
