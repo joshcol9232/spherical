@@ -32,19 +32,16 @@ fn max_value_in_data_points(data_points: &[DataPoint]) -> Option<f32> {
 
 #[macroquad::main("3D")]
 async fn main() {
-    
     let mut cam_handler = CameraHandler::default();
     let data_points = generate_test_sphere(10);
-
     let max_value = max_value_in_data_points(&data_points).unwrap();
 
     loop {
         // Update
-
+        cam_handler.process_mouse();
 
         // Render
         clear_background(WHITE);
-        cam_handler.incremental_update(0.01, 0.01, 0.005);
         set_camera(cam_handler.get_camera());
 
         for data_p in data_points.iter() {
