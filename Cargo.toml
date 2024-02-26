@@ -7,5 +7,8 @@ edition = "2021"
 
 [dependencies]
 colorous = "1.0.12"
+kdtree = "0.7.0"
 macroquad = "0.4.0"
+netcdf = { version = "0.9.0", features = ["static"] }
+structopt = "0.3.26"
 

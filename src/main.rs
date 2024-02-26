@@ -2,12 +2,15 @@ mod consts;
 mod camera_handler;
 mod tools;
 mod data_point;
+mod opts;
+mod loader;
 
 use crate::data_point::DataPoint;
 use crate::tools::vec_from_spherical;
 use crate::camera_handler::CameraHandler;
 
 use macroquad::prelude::*;
+use structopt::StructOpt;
 
 fn generate_test_sphere(segments: usize) -> Vec<DataPoint> {
     let mut data_points = vec![];
@@ -51,12 +54,19 @@ enum RenderingMode {
 
 #[macroquad::main("Spherical")]
 async fn main() {
+    let opt = opts::Opt::from_args();
+
     let mut cam_handler = CameraHandler::default();
 
+    /*
     let data_points = generate_test_sphere(10);
+    */
+    let data_points = loader::load_from_file_opts(&opt).expect("Couldn't load points from file...");
+
     let max_value = max_value_in_data_points(&data_points).unwrap();
 
     const RENDERING_MODE: RenderingMode = RenderingMode::PointCloud;
+    //const RENDERING_MODE: RenderingMode = RenderingMode::CubedSphere;
 
     loop {
         // Update
@@ -70,10 +80,16 @@ async fn main() {
         match RENDERING_MODE {
             RenderingMode::PointCloud => {
                 for data_p in data_points.iter() {
-                    data_p.render_point(max_value);
+                    data_p.render_point(max_value, opt.markersize);
                 }
             },
             RenderingMode::CubedSphere => {
+                let bytes: Vec<u8> = vec![255, 0, 0, 255,
+                                          0, 255, 0, 255,
+                                          0, 0, 255, 255,
+                                          255, 255, 255, 255];
+                let texture = Texture2D::from_rgba8(2, 2, &bytes);
+                draw_affine_parallelogram(vec3(0.0, 0.0, 0.0), vec3(0.0, 1.0, 0.0), vec3(1.0, 1.0, 1.0), Some(&texture), WHITE);
             },
         }
 

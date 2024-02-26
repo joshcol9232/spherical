@@ -17,7 +17,7 @@ impl CameraHandler {
 
         let cam = Camera3D {
             position: rot * vec3(1., 0., 0.) * scale,
-            up: vec3(0., 1., 0.),
+            up: vec3(0., 0., 1.),
             target: vec3(0., 0., 0.),
             ..Default::default()
         };
