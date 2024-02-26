@@ -49,7 +49,7 @@ enum RenderingMode {
 }
 
 
-#[macroquad::main("3D")]
+#[macroquad::main("Spherical")]
 async fn main() {
     let mut cam_handler = CameraHandler::default();
 

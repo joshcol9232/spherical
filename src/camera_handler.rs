@@ -4,7 +4,6 @@ use macroquad::math::{Quat, Mat3, Vec3, Vec2};
 use crate::tools::vec_from_spherical;
 use crate::consts;
 
-
 pub struct CameraHandler {
     // Target is always (0, 0, 0)
     rot: Quat,
@@ -75,7 +74,6 @@ impl CameraHandler {
                 // Zoom by `y` amount
                 self.zoom(-delta.y + 1.0);
             }
-
         }
     }
 }
