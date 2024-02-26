@@ -27,7 +27,7 @@ impl DataPoint {
         tools::value_to_colour(self.value, max_value, &consts::COLOUR_MAP)
     }
 
-    pub fn render(&self, max_value: f32) {
+    pub fn render_point(&self, max_value: f32) {
         draw_sphere(self.location, consts::MARKER_SIZE, None, self.calc_colour(max_value));
     }
 }
